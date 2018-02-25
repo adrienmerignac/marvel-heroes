@@ -51,4 +51,28 @@ class MarvelService {
     private function getHash() {
         return md5($this->ts . $this->privateKey . $this->apiKey);
     }
+
+    public function getClient(){
+		return $this->client;
+    }
+    
+    public function getBaseUrl(){
+		return $this->baseUrl;
+    }
+    
+    public function getApiKey(){
+		return $this->apiKey;
+    }
+    
+    public function getTs(){
+		return $this->ts;
+    }
+    
+    public function getPrivateKey(){
+		return $this->privateKey;
+	}
+
+	public function setClient($client){
+        $this->client = $client;
+    }
 }
