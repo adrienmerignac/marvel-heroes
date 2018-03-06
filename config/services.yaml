@@ -2,8 +2,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     base_url: 'https://gateway.marvel.com/v1/public/'
-    api_key: ''
-    private_key: ''
+    api_key: 'b79c750d610ea1e6fb791532f51cab66'
+    private_key: '962696c8338211411a285596e346bd1526d36a09'
 
 services:
     # default configuration for services in *this* file

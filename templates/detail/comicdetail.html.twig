@@ -1,0 +1,101 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <style>
+        .thumbnail-big {
+            width: 150px;
+            height: 150px;
+        }
+
+        .title-big {
+            font-size: 4em;
+        }
+
+        .fa-star {
+            cursor: pointer;
+        }
+
+        .card-img-top {
+            height: 315px;
+        }
+
+        .card {
+            background: none;
+            border: none;
+        }
+
+        .card-title {
+            color: #000;
+            text-transform: uppercase;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}{{ comic.title }}{% endblock %}
+
+{% block body %}
+
+    <div class="d-flex align-items-center mb-5">
+        <img src="{{ comic.thumbnail.path }}.{{ comic.thumbnail.extension }}"
+             class="thumbnail rounded-circle mr-5 thumbnail-big">
+        <h1 class="title mr-5 title-big">{{ comic.title }}</h1>
+        <i class="far fa-star fa-2x text-warning" title="Ajouter en favoris"></i>
+    </div>
+
+    <div class="alert alert-warning alert-dismissable hidden">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        Ajouté aux favoris avec succès !
+    </div>
+    <div class="alert alert-danger alert-dismissable hidden">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        Vous ne pouvez ajouté que <strong>8</strong> favoris.
+    </div>
+
+    <div class="description mb-5">
+        <h2>Description</h2>
+        <div class="text-secondary">
+            {{ comic.description | default('Aucune description n\'est disponible pour ce comics.') }}
+        </div>
+    </div>
+
+    <div class="comics-container">
+        <h2 class="comics-first mb-2">Nombre de Créateurs (total: {{ comic.creators.available }})</h2>
+        <div class="comics-list d-flex align-items-center">
+            {% for creatorItem in comic.creators.items %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ creatorItem.name }}</h5>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+            $(".fa-star").click(function(event) {
+                var data = {
+                    id: {{ comic.id }},
+                    name: "{{ comic.title }}"
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "favoris",
+                    data: data,
+                    success: function() {
+                        $(event.currentTarget).addClass('fas');
+                        $(event.currentTarget).removeClass('far');
+                        $('.alert-warning').show();
+                        $('.alert-danger').hide();
+                    },
+                    error: function() {
+                        $('.alert-warning').hide();
+                        $('.alert-danger').show();
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
