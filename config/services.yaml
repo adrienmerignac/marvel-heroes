@@ -1,9 +1,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    base_url: 'https://gateway.marvel.com/v1/public/'
-    api_key: 'b79c750d610ea1e6fb791532f51cab66'
-    private_key: '962696c8338211411a285596e346bd1526d36a09'
+    base_url: '%env(BASE_URL)%'
+    api_key: '%env(API_KEY)%'
+    private_key: '%env(PRIVATE_KEY)%'
 
 services:
     # default configuration for services in *this* file

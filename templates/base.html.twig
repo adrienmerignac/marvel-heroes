@@ -16,9 +16,21 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a class="navbar-brand" href="{{ url('characters_list') }}">Marvel Characters</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <a style="color: #ffffff;" class="nav-link link" href="{{ url('characters_list') }}">Liste des héros</a>
-                <a style="color: #ffffff;" class="nav-link link" href="{{ url('comics_list') }}">Liste des comics</a>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link mt-2" href="{{ url('characters_list') }}">Heroes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mt-2" href="{{ url('comics_list') }}">Comics</a>
+                    </li>
+                </ul>
+                <span class="navbar-text">
+                    <form class="form-inline">
+                        <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </span>
             </div>
         </nav>
         <div class="content">

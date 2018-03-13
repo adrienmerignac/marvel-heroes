@@ -60,11 +60,26 @@
     </div>
 
     <div class="comics-container">
-        <h2 class="comics-first mb-2">Nombre de Créateurs (total: {{ comic.creators.available }})</h2>
+        <h2 class="comics-first mb-5">Nombre de Créateurs (total: {{ comic.creators.available }})</h2>
         <div class="comics-list d-flex align-items-center">
             {% for creatorItem in comic.creators.items %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ creatorItem.name }}</h5>
+                <div class="card mr-4">
+                    <h5 class="">{{ creatorItem.name }}</h5>
+                    <h5 class="card-title mb-5">{{ creatorItem.role }}</h5>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="comics-container mb-5">
+        <h2 class="comics-first">Nombre de Personnages (total: {{ comic.characters.available }})</h2>
+        <div class="comics-list d-flex align-items-center">
+            {% if comic.characters.available == 0 %}
+                <p class="text-secondary mb-5">Aucun Personnage n'est disponible pour ce comics.</p>
+            {% endif %}
+            {% for characterItem in comic.characters.items %}
+                <div class="text-secondary mr-4 mt-5 mb-5">
+                    <h5 class="card-title">{{ characterItem.name }}</h5>
                 </div>
             {% endfor %}
         </div>

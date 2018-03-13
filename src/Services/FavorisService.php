@@ -31,6 +31,7 @@ class FavorisService {
         if ($request->cookies->get($name) !== null) {
             $favoris = unserialize($request->cookies->get($name));
         }
+        //throw new Exception("Il existe déjà un cookie avec ce nom.");
         return $favoris;
     }
 

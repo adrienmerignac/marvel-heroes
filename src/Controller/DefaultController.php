@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -29,18 +30,25 @@ class DefaultController extends Controller
      */
     private $favorisService;
 
-    public function __construct(MarvelService $service, FavorisService $favorisService) {
+    protected $requestStack;
+
+    public function __construct(MarvelService $service, FavorisService $favorisService, RequestStack $requestStack) {
         $this->service = $service;
         $this->limit = 20;
         $this->favorisService = $favorisService;
+        $this->requestStack = $requestStack;
     }
 
     /**
      * @Route("/{page}", name="characters_list", requirements={"page" = "\d+"})
      * @Template("list/list.html.twig")
+     * @param int $page
+     * @return array
      */
-    public function index(Request $request, $page = 6)
+    public function index($page = 6)
     {
+        $request = $this->requestStack->getCurrentRequest();
+
         // Création d'une liste de favoris vide par défaut
         $favoris = $this->favorisService->getFavoris($request, "characters");
 
@@ -71,8 +79,10 @@ class DefaultController extends Controller
      * @Route("/details/{id}/", requirements={"id" = "\d+"}, name="characters_detail")
      * @Template("detail/detail.html.twig")
      * @Method({"GET"})
+     * @param $id
+     * @return array
      */
-    public function detail(Request $request, $id)
+    public function detail($id)
     {
         $characters = $this->service->get("characters/".$id);
         $comics = $this->service->get("characters/".$id."/comics", [
@@ -88,9 +98,13 @@ class DefaultController extends Controller
     /**
      * @Route("/comic/{page}", name="comics_list", requirements={"page" = "\d+"})
      * @Template("list/comic.html.twig")
+     * @param int $page
+     * @return array
      */
-    public function comics(Request $request, $page = 8)
+    public function comics($page = 8)
     {
+
+        $request = $this->requestStack->getCurrentRequest();
         $favoris = $this->favorisService->getFavoris($request, "comics");
 
 
@@ -121,14 +135,18 @@ class DefaultController extends Controller
      * @Route("/comic/{id}/", requirements={"id" = "\d+"}, name="comics_detail")
      * @Template("detail/comicdetail.html.twig")
      * @Method({"GET"})
+     * @param $id
+     * @return array
      */
-    public function comicDetail(Request $request, $id)
+    public function comicDetail($id)
     {
         $comics = $this->service->get("comics/".$id);
         $creators = $this->service->get("comics/".$id."/creators");
+        $characters = $this->service->get("comics/".$id."/characters");
         return array(
             "comic" => $comics->data->results[0],
-            "creators" => $creators->data->results
+            "creators" => $creators->data->results,
+            "characters" => $characters->data->results
         );
     }
 
@@ -136,8 +154,9 @@ class DefaultController extends Controller
      * @Route("/details/{id}/favoris", requirements={"id" = "\d+"}, name="characters_detail_favoris")
      * @Method({"POST"})
      */
-    public function favoris(Request $request)
+    public function favoris()
     {
+        $request = $this->requestStack->getCurrentRequest();
         $name = "characters";
 
         // Création de la réponse
@@ -162,8 +181,9 @@ class DefaultController extends Controller
      * @Route("/comic/{id}/favoris", requirements={"id" = "\d+"}, name="comic_detail_favoris")
      * @Method({"POST"})
      */
-    public function comicsFavoris(Request $request)
+    public function comicsFavoris()
     {
+        $request = $this->requestStack->getCurrentRequest();
         $name = "comics";
 
         // Création de la réponse

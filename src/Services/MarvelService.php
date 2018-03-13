@@ -11,12 +11,11 @@ use \GuzzleHttp\Client;
 class MarvelService {
     
     private $client;
-
     private $baseUrl;
     private $apiKey;
     private $privateKey;
     private $ts;
-    
+
     public function __construct($baseUrl, $apiKey, $privateKey)
     {
         $this->client = new Client();
@@ -29,6 +28,10 @@ class MarvelService {
 
     /**
      * Get resquest to Marvel API
+     *
+     * @param $route
+     * @param array $params
+     * @return mixed
      */
     public function get($route, $params = []) {
         $queryParams = array_merge($params, [
